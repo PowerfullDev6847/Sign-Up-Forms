@@ -4,10 +4,35 @@
 
 {% block content %}
 <div class = "container">
-  <div>
-    <h1> Bootstrap Template</h1>
-  </div>
-
+  <div class="row">
+    <h1 class="tetx-center text-primary"> My Users </h1>
+    </div class = "col-md-8 offset-2">
+      <table class="table table.striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">FullName</th>
+            <th scope="col">Email</th>
+            <th scope="col">Username</th>
+            <th scope="col">Password</th>
+            <th scope="col">Show</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <th scope="row">{{user.id}}</th>
+            <td>{{user.full_name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.password}}</td>
+            <td>{{user.show}}</td>
+            <td><a href="" class="btn btn-success mx-3">Edit</a> <a href="" class="btn btn-danger">Delate</a></td>
+          </tr>
+          {% endfor %}
+      </tbody>
+   </table>
 </div>
 
 {% endblock content %}
