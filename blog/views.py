@@ -37,6 +37,19 @@ def add_user(request):
             return redirect('index')
     return render(request, "blog/create_user.html", {"form":form})
 
+def update_user(request,pk):
+    user = WebUser.objects.get(id=pk)
+    form = WebUserForm(instance=user)
+    if request.method =="POST":
+        form = WebUserForm(data=request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    return render(request, "blog/update_user.html",{"form":form})
 
 
 
+def delete_user(request,pk):
+    user = WebUser.objects.get(id=pk)
+    user.delete()
+    return redirect('index')
