@@ -3,38 +3,26 @@
 {% block title %} Index Page {% endblock title %}
 
 {% block content %}
-<div class = "container">
-  <div class="row">
-    <h1 class="tetx-center text-primary"> My Users </h1>
-    <div class="col-md-10 offset-1"> 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Username</th>
-            <th scope="col">Password</th>
-            <th scope="col">Show</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for user in users %}
-          <tr>
-            <th scope="row">{{user.id}}</th>
-            <td>{{user.full_name}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.username}}</td>
-            <td>{{user.password}}</td>
-            <td>{{user.show}}</td>
-            <td><a href="{% url 'update_user' user.id %}" class="btn btn-success mx-3">Edit</a><a href=" {% url 'delete_user' user.id %}" class="btn btn-danger">Delete</a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <div class = "container">
+    <div class="row">
+      <h1 class="text-center my-5" style="background-color: gold;"> MAHSULOTLAR</h1>
+      {% for product in products %}
+        <div class="col-md-4 my-3">
+          <div class="" style="width: 17.7rem;">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="rounded-5 card-title text-center" alt="Bu yerda rasm bor edi" height="120px" width="120px" >
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ product.title}}</h5>
+              <h6 class="card-text text-center">Price: {{ product.price}} $</h6>
+              <div class="d-grid gap-2">
+                <a class="btn btn-outline-warning rounded-5 " href="{% url 'product_detail' product.pk %}" >Batafsil</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
     </div>
   </div>
-</div>
 {% endblock content %}
 

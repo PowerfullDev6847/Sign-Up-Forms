@@ -1,11 +1,39 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookForm, WebUserForm
 from .models import WebUser
+from main.models import Product, Category
+from main.forms import ProductForm
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+
+def index(request, cat_slug=None):
+    q = request.GET.get('q')
+    cats = Category.objects.all()
+    if cat_slug:
+        cat = get_object_or_404(Category, slug=cat_slug)
+        products = Product.objects.filter(category=cat)
+    elif q:
+        products = Product.objects.filter(
+            Q(title__icontains=q) | Q(description__icontains=q)
+        )
+    else:
+        products = Product.objects.all()
+    return render(request, "blog/index.html",{"products": products, "cats": cats})
+
+def product_detail(request, pk):
+    product=get_object_or_404(Product, id=pk)
+    return render(request, "blog/product_detail.html",{"product": product})
 
 
-def index(request):
-    web_users = WebUser.objects.all()
-    return render(request, "blog/index.html",{"users": web_users})
+def add_product(request):
+    form = ProductForm()
+    if request.method=="POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    return render(request, "main/add_product.html",{"form": form})
+
 
 def add_book(request):
     form = BookForm()
@@ -36,6 +64,7 @@ def add_user(request):
             )
             return redirect('index')
     return render(request, "blog/create_user.html", {"form":form})
+
 
 def update_user(request,pk):
     user = WebUser.objects.get(id=pk)
